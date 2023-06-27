@@ -1,4 +1,5 @@
-﻿using Unity.Entities;
+﻿using Unity.Collections;
+using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
@@ -12,11 +13,20 @@ namespace TMG.Zombie
         readonly RefRW<LocalTransform> _transform;
         readonly RefRO<GraveyardProperties> _roGraveyardProerties;
         readonly RefRW<GraveyardRandom> _rwGraveyardRandom;
+        readonly RefRW<ZombieSpawnPoints> _rwZombieSpawnPoints;
 
-
+        private readonly RefRW<ZombieSpawnTimer> _zombieSpawnTimer;
+        
         // 数量
         public int NumberTombstonesToSpawn => _roGraveyardProerties.ValueRO.NumberTombstonesToSpawn;
         public Entity TombstonePrefab => _roGraveyardProerties.ValueRO.TobstonePrefab;
+        
+        public bool ZombieSpawnPointInitialized()
+        {
+            return _rwZombieSpawnPoints.ValueRO.Value.IsCreated && ZombieSpawnPointCount > 0;
+        }
+        private int ZombieSpawnPointCount => _rwZombieSpawnPoints.ValueRO.Value.Value.Value.Length;
+
 
 
         private LocalTransform transform => _transform.ValueRO;
@@ -53,5 +63,17 @@ namespace TMG.Zombie
                 Scale = getScale(0.5f)
             };
         }
+
+        public float ZombieSpawnTimer
+        {
+            get => _zombieSpawnTimer.ValueRO.Value;
+            set => _zombieSpawnTimer.ValueRW.Value = value;
+        }
+        public bool TimeToSpawnZombie => ZombieSpawnTimer <=0f;
+
+        public float ZombieSpawnRate => _roGraveyardProerties.ValueRO.ZombieSpawnRate;
+
+        public Entity ZombiePrefab => _roGraveyardProerties.ValueRO.ZombiePrefab;
+
     }
 }

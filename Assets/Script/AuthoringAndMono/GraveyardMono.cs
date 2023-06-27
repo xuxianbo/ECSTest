@@ -5,7 +5,7 @@ using Random = Unity.Mathematics.Random;
 
 namespace TMG.Zombie
 {
-    public class GraveyardMono:MonoBehaviour
+    public class GraveyardMono : MonoBehaviour
     {
         /// <summary>
         /// 墓碑尺寸
@@ -26,11 +26,15 @@ namespace TMG.Zombie
         /// 随机种子
         /// </summary>
         public uint RandomSeed;
-        
+
+
+        public GameObject ZombiePrefab;
+        public float ZombieSpawnRate;
+
         /// <summary>
         /// 烘焙
         /// </summary>
-        class GraveyardMonoBaker:Baker<GraveyardMono>
+        class GraveyardMonoBaker : Baker<GraveyardMono>
         {
             public override void Bake(GraveyardMono authoring)
             {
@@ -39,13 +43,18 @@ namespace TMG.Zombie
                 {
                     FieldDimensions = authoring.FieldDimensions,
                     NumberTombstonesToSpawn = authoring.NumberTombstonesToSpawn,
-                    TobstonePrefab = GetEntity(authoring.TobstonePrefab, TransformUsageFlags.Dynamic)
+                    TobstonePrefab = GetEntity(authoring.TobstonePrefab, TransformUsageFlags.Dynamic),
+                    ZombiePrefab = GetEntity(authoring.ZombiePrefab, TransformUsageFlags.Dynamic),
+                    ZombieSpawnRate = authoring.ZombieSpawnRate
                 });
-                
+
                 AddComponent(entity, new GraveyardRandom
                 {
                     Value = Random.CreateFromIndex(authoring.RandomSeed)
                 });
+
+                AddComponent<ZombieSpawnPoints>(entity);
+                AddComponent<ZombieSpawnTimer>(entity);
             }
         }
     }

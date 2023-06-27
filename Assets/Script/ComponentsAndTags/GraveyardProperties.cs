@@ -25,5 +25,23 @@ namespace TMG.Zombie
         /// 墓碑预制件
         /// </summary>
         public Entity TobstonePrefab;
+
+        /// <summary>
+        /// 僵尸预制件
+        /// </summary>
+        public Entity ZombiePrefab;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public float ZombieSpawnRate;
+    }
+
+    /// <summary>
+    /// 定时器
+    /// </summary>
+    public struct ZombieSpawnTimer : IComponentData
+    {
+        public float Value;
     }
 }
