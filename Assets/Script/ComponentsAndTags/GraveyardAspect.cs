@@ -14,7 +14,7 @@ namespace TMG.Zombie
         readonly RefRO<GraveyardProperties> _roGraveyardProerties;
         readonly RefRW<GraveyardRandom> _rwGraveyardRandom;
         readonly RefRW<ZombieSpawnPoints> _rwZombieSpawnPoints;
-
+        
         private readonly RefRW<ZombieSpawnTimer> _zombieSpawnTimer;
         
         // 数量
@@ -25,6 +25,8 @@ namespace TMG.Zombie
         {
             return _rwZombieSpawnPoints.ValueRO.Value.IsCreated && ZombieSpawnPointCount > 0;
         }
+
+        private ZombieSpawnPoints ZombieSpawnPoints => _rwZombieSpawnPoints.ValueRO;
         private int ZombieSpawnPointCount => _rwZombieSpawnPoints.ValueRO.Value.Value.Value.Length;
 
 
@@ -75,5 +77,24 @@ namespace TMG.Zombie
 
         public Entity ZombiePrefab => _roGraveyardProerties.ValueRO.ZombiePrefab;
 
+
+        public LocalTransform GetZombieSpawnPoint()
+        {
+            var position = GetRandomZombieSpawnPoint();
+            return new  LocalTransform
+            {
+                Position = position,
+                Scale = 1F,
+                Rotation = quaternion.RotateY(MathHelpers.GetHeading(position, Position))
+            };
+        }
+
+        private float3 GetRandomZombieSpawnPoint()
+        {
+            var index =_rwGraveyardRandom.ValueRW.Value.NextInt(ZombieSpawnPointCount);
+            return _rwZombieSpawnPoints.ValueRW.Value.Value.Value[index];
+        }
+
+        public float3 Position => _transform.ValueRO.Position;
     }
 }
