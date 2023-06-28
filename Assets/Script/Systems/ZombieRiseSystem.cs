@@ -42,10 +42,12 @@ namespace TMG.Zombie
         private void Execute(ZombieRiseAspect zombieRiseAspect, [EntityIndexInQuery]int sortKey)
         {
             zombieRiseAspect.Rise(DeltaTime);
-            if (zombieRiseAspect.IsAboveGround)
+            if (!zombieRiseAspect.IsAboveGround)
             {
-                
+                return;
             }
+
+            zombieRiseAspect.SetAtGroundLevel();
         }
     }
 }

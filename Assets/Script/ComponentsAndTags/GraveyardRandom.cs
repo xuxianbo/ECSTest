@@ -6,5 +6,7 @@ namespace TMG.Zombie
     public struct GraveyardRandom:IComponentData
     {
         public Random Value;
+
+        
     }
 }

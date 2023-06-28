@@ -17,14 +17,15 @@ namespace TMG.Zombie
         }
 
         [BurstCompile]
-        public void OnDestroy(ref SystemState state)
+        void OnDestroy(ref SystemState state)
         {
+
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            Debug.Log("============>>>SpawnZombieSystem OnUpdate");
+            // Debug.Log("============>>>SpawnZombieSystem OnUpdate");
             var deltaTime = SystemAPI.Time.DeltaTime;
             var ecbSingleton = SystemAPI.GetSingleton<BeginInitializationEntityCommandBufferSystem.Singleton>();
 
@@ -33,34 +34,35 @@ namespace TMG.Zombie
                 DeltaTime = deltaTime,
                 ECB = ecbSingleton.CreateCommandBuffer(state.WorldUnmanaged)
             };
+
             state.Dependency = job.Schedule(state.Dependency);
         }
     }
-    
+
     [BurstCompile]
     public partial struct SpawnZombieJob : IJobEntity
     {
         public float DeltaTime;
         public EntityCommandBuffer ECB;
-        
+
         [BurstCompile]
         private void Execute(GraveyardAspect graveyard)
         {
-            Debug.Log("============>>>SpawnZombieSystem Execute");
+            // Debug.Log("============>>>SpawnZombieSystem Execute");
 
             graveyard.ZombieSpawnTimer -= DeltaTime;
-            if(!graveyard.TimeToSpawnZombie) return;
+            if (!graveyard.TimeToSpawnZombie) return;
             // if(!graveyard.ZombieSpawnPointInitialized()) return;
-            
+
             graveyard.ZombieSpawnTimer = graveyard.ZombieSpawnRate;
             var newZombie = ECB.Instantiate(graveyard.ZombiePrefab);
 
             var newZombieTransform = graveyard.GetZombieSpawnPoint();
             ECB.SetComponent(newZombie, newZombieTransform);
-            
+
             var zombieHeading = MathHelpers.GetHeading(newZombieTransform.Position, graveyard.Position);
-            // ECB.SetComponent(newZombie, new ZombieHeading{Value = zombieHeading});
+            ECB.SetComponent(newZombie, new ZombieHeading{Value = zombieHeading});
         }
     }
-    
+
 }
