@@ -226,8 +226,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RiseRate: 3
   WalkSpeed: 3
-  WalkAmplitude: 0.5
-  WalkFrequency: 3
+  WalkAmplitude: 0.2
+  WalkFrequency: 0.5
+  EatDamagePerSecond: 0.1
+  EatAmplitude: 0.2
+  EatFrequency: 0.5
 --- !u!1 &7784815372405738040
 GameObject:
   m_ObjectHideFlags: 0

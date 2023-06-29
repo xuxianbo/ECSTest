@@ -56,7 +56,7 @@ namespace TMG.Zombie
             if (zombieRiseAspect.IsInStoppingRange(Position, BrainRadiusSq))
             {
                 ECB.SetComponentEnabled<ZombieWalkProperties>(sortKey, zombieRiseAspect.Entity, false);
-                // ECB.SetComponentEnabled<ZombieWalkProperties>(sortKey, zombieRiseAspect.Entity, false);
+                ECB.SetComponentEnabled<ZombieEatProperties>(sortKey, zombieRiseAspect.Entity, true);
                 // ECB.SetComponentEnabled<ZombieWalkProperties>(sortKey, zombieRiseAspect.Entity, false);
             }
         }

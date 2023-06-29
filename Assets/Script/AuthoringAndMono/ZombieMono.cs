@@ -19,6 +19,20 @@ namespace TMG.Zombie
         /// 频率
         /// </summary>
         public float WalkFrequency;
+        
+        /// <summary>
+        /// 每秒吃掉多上伤害
+        /// </summary>
+        public float EatDamagePerSecond;
+        /// <summary>
+        /// 吃得幅度
+        /// </summary>
+        public float EatAmplitude;
+        /// <summary>
+        /// 吃的频率
+        /// </summary>
+        public float EatFrequency;
+
     }
 
     public class ZombieBaker : Baker<ZombieMono>
@@ -39,10 +53,15 @@ namespace TMG.Zombie
                 WalkFrequency = authoring.WalkFrequency
             });
 
+            AddComponent(entity, new ZombieEatProperties()
+            {
+                EatDamagePerSecond = authoring.EatDamagePerSecond,
+                EatAmplitude = authoring.EatAmplitude,
+                EatFrequency = authoring.EatFrequency
+            });
 
             AddComponent<ZombieTimer>(entity);
             AddComponent<ZombieHeading>(entity);
-
         }
     }
 }
